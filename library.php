@@ -6,8 +6,8 @@ class Sales
     {
         $payment = new PaypalPayment;
         try {
-            $payment->validate($data, function ($testAmount) {
-                return $this->test($amount, $testAmount);
+            $payment->validate($data, function ($testAmount) use ($amount, $payment) {
+                return $payment->test($amount, $testAmount);
             });
         } catch (\PaypalException $e) {
             new \RuntimeException('something weird', 23, $e);
@@ -27,10 +27,15 @@ class PaypalPayment
         }
     }
 
-    private function test($amount, $testAmount)
+    public function test($amount, $testAmount)
     {
-        return $amount == $testAmount;
+        return $amount === $testAmount;
     }
+}
+
+
+class PaypalException extends Exception {
+
 }
 
 (new Sales)->testPayment([], 200);
