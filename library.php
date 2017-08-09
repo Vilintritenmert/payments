@@ -1,10 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 class Sales
 {
     public function testPayment(array $data, $amount)
@@ -17,10 +12,8 @@ class Sales
         } catch (\PaypalException $e) {
             new \RuntimeException('something weird', 23, $e);
         }
-
         return $payment;
     }
-
 }
 
 class PaypalPayment
@@ -33,6 +26,8 @@ class PaypalPayment
         if (!$comparator($this->testAmount)) {
             throw new \PaypalException("Incorrect amount");
         }
+
+        return true;
     }
 
     public function test($amount, $testAmount)
@@ -41,8 +36,8 @@ class PaypalPayment
     }
 }
 
-
-class PaypalException extends Exception {
+class PaypalException extends Exception
+{
 
 }
 
